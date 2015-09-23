@@ -1,6 +1,7 @@
 flags: {}
 packages:
 - ethereum-rlp/
+- ethereum-conf/
 - hminer/
 - ethereum-merkle-patricia-db/
 - ethereum-client-haskell/

@@ -4,6 +4,7 @@
 .repo
 .stack-work
 ethereum-rlp
+ethereum-conf
 ethereum-client-haskell
 ethereum-vm
 ethereum-data-sql
