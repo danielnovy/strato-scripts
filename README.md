@@ -1,3 +1,7 @@
+#ethereum-build
+
+[![BlockApps logo](http://blockapps.net/img/logo_cropped.png)](http://blockapps.net)
+
 Running autobuild will build ethereumH in this directory and should work
 seamlessly on Ubuntu. Debian is also reported to work.
 
