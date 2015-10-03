@@ -8,6 +8,7 @@ then
 fi
 
 mkdir -p work/upload/bin
+mkdir -p work/upload/ethereumH
 
 cp .stack-work/install/x86_64-linux/lts-2.15/7.8.4/bin/ethereumH work/upload/bin/
 cp .stack-work/install/x86_64-linux/lts-2.15/7.8.4/bin/api work/upload/bin/
@@ -28,5 +29,7 @@ cp setup work/upload/bin/
 cp ethReset work/upload/bin/
 cp startPeer work/upload/bin/
 cp stopPeer work/upload/bin/
+
+cp ethereum-conf/ethconf.yaml work/upload/ethereumH/
 
 rsync -avz -e "ssh -o StrictHostKeyChecking=no -o UserKnownHostsFile=/dev/null" --progress work/upload/* root@$1:~/
