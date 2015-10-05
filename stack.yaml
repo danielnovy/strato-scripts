@@ -13,6 +13,7 @@ packages:
 - hserver-eth/
 - p2p-server/
 - ethereum-query/
+- yesod-raml/
 extra-deps: 
 - Crypto-4.2.5.1
 - SHA2-0.2.5
@@ -23,6 +24,5 @@ extra-deps:
 - nibblestring-0.0.3
 - pbkdf-1.1.1.1
 - text-1.1.1.4
-- yesod-raml-0.1.0
 - directory-1.2.3.1
 resolver: lts-2.15
