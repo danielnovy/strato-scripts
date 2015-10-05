@@ -21,7 +21,7 @@ cp .stack-work/install/x86_64-linux/lts-2.15/7.8.4/bin/ethereum-setup work/uploa
 
 #cp work/go-ethereum/build/bin/geth work/upload/bin/
 
-cp genesis.json work/upload/
+cp ethereum-data-sql/genesis.json work/upload/
 cp -a hserver-eth/static work/upload/
 cp -a hserver-eth/config work/upload/
 cp bashrc2 work/upload/bashrc2
