@@ -9,14 +9,11 @@ fi
 
 mkdir -p work/upload/bin
 
-cp .stack-work/install/x86_64-linux/lts-2.15/7.8.4/bin/ethereumH work/upload/bin/
-cp .stack-work/install/x86_64-linux/lts-2.15/7.8.4/bin/api work/upload/bin/
-cp .stack-work/install/x86_64-linux/lts-2.15/7.8.4/bin/p2p-server work/upload/bin/
-cp .stack-work/install/x86_64-linux/lts-2.15/7.8.4/bin/ethereumH work/upload/bin/
-cp .stack-work/install/x86_64-linux/lts-2.15/7.8.4/bin/ethereumH work/upload/bin/
-cp .stack-work/install/x86_64-linux/lts-2.15/7.8.4/bin/ethereumH work/upload/bin/
-cp .stack-work/install/x86_64-linux/lts-2.15/7.8.4/bin/ethereum-vm work/upload/bin/
-cp .stack-work/install/x86_64-linux/lts-2.15/7.8.4/bin/ethereum-setup work/upload/bin/
+cp .stack-work/install/x86_64-linux/lts-3.4/7.10.2/bin/ethereumH work/upload/bin/
+cp .stack-work/install/x86_64-linux/lts-3.4/7.10.2/bin/api work/upload/bin/
+cp .stack-work/install/x86_64-linux/lts-3.4/7.10.2/bin/p2p-server work/upload/bin/
+cp .stack-work/install/x86_64-linux/lts-3.4/7.10.2/bin/ethereum-vm work/upload/bin/
+cp .stack-work/install/x86_64-linux/lts-3.4/7.10.2/bin/ethereum-setup work/upload/bin/
 
 #cp work/go-ethereum/build/bin/geth work/upload/bin/
 
