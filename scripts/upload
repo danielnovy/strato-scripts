@@ -8,6 +8,7 @@ then
 fi
 
 mkdir -p work/upload/bin
+mkdir -p work/upload/ethereumH
 
 cp .stack-work/install/x86_64-linux/lts-3.4/7.10.2/bin/ethereumH work/upload/bin/
 cp .stack-work/install/x86_64-linux/lts-3.4/7.10.2/bin/api work/upload/bin/
@@ -17,7 +18,7 @@ cp .stack-work/install/x86_64-linux/lts-3.4/7.10.2/bin/ethereum-setup work/uploa
 
 #cp work/go-ethereum/build/bin/geth work/upload/bin/
 
-cp genesis.json work/upload/
+cp ethereum-data-sql/genesis.json work/upload/
 cp -a hserver-eth/static work/upload/
 cp -a hserver-eth/config work/upload/
 cp bashrc2 work/upload/bashrc2
@@ -25,5 +26,7 @@ cp setup work/upload/bin/
 cp ethReset work/upload/bin/
 cp startPeer work/upload/bin/
 cp stopPeer work/upload/bin/
+
+cp ethereum-conf/ethconf.yaml work/upload/ethereumH/
 
 rsync -avz -e "ssh -o StrictHostKeyChecking=no -o UserKnownHostsFile=/dev/null" --progress work/upload/* root@$1:~/
