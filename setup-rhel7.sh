@@ -75,5 +75,5 @@ ethereum-setup
 
 cd
 cp ~/ethereumH/ethereum-conf/ethconf.yaml ~/.ethereumH
-nohup ~/ethereumH/ethereum-build/startAPI.sh
-nohup ~/ethereumH/ethereum-build/startEVM.sh
+cp ~/ethereumH/ethereum-conf/start{API,EVM}.sh ~/.local/bin
+sudo setcap 'cap_net_bind_service=+ep' ~/.local/bin/api
