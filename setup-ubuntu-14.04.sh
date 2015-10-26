@@ -6,32 +6,37 @@ echo 'deb http://download.fpcomplete.com/ubuntu/trusty stable main'|sudo tee /et
 sudo apt-get update && sudo apt-get install stack -y
 
 # Get mgit
-git clone git@github.com:blockapps/mgit
+git clone http://github.com/blockapps/mgit
 cd mgit
 stack setup
 stack install
 
+# Fix PATH
+for x in ~/.local/bin; do
+  case ":$PATH:" in
+    *":$x:"*) :;; # already there
+    *) echo "PATH=\"$x:$PATH\"" >> ~/.profile;;
+  esac
+done
+. ~/.profile
+
 # Get ethereumH
 cd
-mgit clone git@github.com:blockapps/ethereumH -b develop
+mgit clone http://github.com/blockapps/ethereumH -b develop
 cd ethereumH/ethereum-vm
-git rebase develop deployment-patches
+git merge origin/deployment-patches
 
 # Get API certificates
-echo "Enter azure password to get certificates"
-scp 'ryanr@azure.blockapps.net:~/ethereumH/hserver-eth/{priv,{certificate,key}.pem}' .
+cp ~/{priv,{certificate,key}.pem} ~/ethereumH/hserver-eth
 
 # Get solc
 cd
-echo "Enter azure password to get solc"
-scp ryanr@azure.blockapps.net:~/solc.tar.gz .
 tar xvf solc.tar.gz 
 sed -i "s@$$HOME@$HOME@g" ~/.local/bin/solc
 
 # Get necessary packages
 stack install happy alex
-
-apt-get -y install libpq-dev postgresql postgresql-client libleveldb-dev libboost-filesystem1.54.0 libboost-program-options1.54.0 libjsoncpp0 libboost-system1.55.0 libboost-thread1.55.0 libboost-filesystem1.55.0
+sudo apt-get -y install libpq-dev postgresql postgresql-client libleveldb-dev
 
 # Build
 cd ~/ethereumH
@@ -40,7 +45,7 @@ stack install
 # Set up databases
 sudo -u postgres psql -U postgres -d postgres -c "alter user postgres with password 'api';"
 sudo -u postgres createdb eth 2> /dev/null || echo "database already exists"
-sudo cat >/var/lib/pgsql/9.4/data/pg_hba.conf <<EOF
+cat <<EOF | sudo tee /etc/postgresql/9.3/main/pg_hba.conf >/dev/null
 # TYPE  DATABASE        USER            ADDRESS                 METHOD
 
 # "local" is for Unix domain socket connections only
@@ -52,6 +57,21 @@ host    all             all             ::1/128                 md5
 EOF
 
 cd ~/ethereumH/ethereum-data-sql
-mv genesis.json genesis-real.json
+mv genesis.json genesis-real.json5H
 ln -s stablenetGenesis.json genesis.json
 ethereum-setup
+
+cd
+cp ~/ethereumH/ethereum-conf/ethconf.yaml ~/.ethereumH/
+cp ~/ethereumH/ethereum-build/start{API,EVM}.sh ~/.local/bin/
+sudo setcap 'cap_net_bind_service=+ep' ~/.local/bin/api
+
+sudo apt-get -y install nginx
+cat <<EOF | sudo tee /etc/nginx/sites-available/https_redirect >/dev/null
+server {
+    server_name *.blockapps.net;
+    return 301 https://$host$request_uri;5F5F
+}
+EOF
+sudo ln -s ../https_redirect /etc/nginx/sites-enabled
+sudo rm -r /etc/nginx/sites-enabled/default
