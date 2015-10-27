@@ -128,9 +128,10 @@ function copy_scripts () {
 #!/bin/bash
 for homedir in /home/*; do
     user=\$(basename \$homedir)
-    for script in \$homedir/.local/startup/*; do
-         sudo -u \$user bash -c "[[ -x $script ]] && \$script start"
-    done
+    sudo -u $user bash -c \
+    "for script in \$homedir/.local/startup/*; do
+         [[ -x \$script ]] && \$script start
+    done"
 done
 exit 0
 EOF
@@ -138,10 +139,12 @@ EOF
     cat <<EOF  >~/.local/strato/ethereum-vm &&
 #!/bin/bash
 
+evm=~/.local/bin/ethereum-vm
+
 case \$1 in
     "start")
         cd
-        screen -d -m -S ethereum-vm ethereum-vm --sqlDiff --createTransactionResults --wrapTransactions
+        screen -d -m -S ethereum-vm \$evm --sqlDiff --createTransactionResults --wrapTransactions
         ;;
     "stop")
         screen -S ethereum-vm -X kill
@@ -154,11 +157,13 @@ EOF
     cat <<EOF >~/.local/strato/api &&
 #!/bin/bash
 
+api=~/.local/bin/api
+
 case \$1 in
     "start")
         cd ~/ethereumH/hserver-eth
         export HOST="\$(hostname -I)" APPROOT="" PORT=$port
-        screen -d -m -S api api
+        screen -d -m -S api \$api
         ;;
     "stop")
         screen -S api -X kill
