@@ -1,4 +1,4 @@
 #!/bin/bash
 
 cd
-screen -S ethereum-vm ethereum-vm --sqlDiff --createTransactionResults --wrapTransactions
+screen -d -m -S ethereum-vm ethereum-vm --sqlDiff --createTransactionResults --wrapTransactions
