@@ -94,25 +94,63 @@ host    all             all             127.0.0.1/32            md5
 host    all             all             ::1/128                 md5
 EOF
     cd ~/ethereumH/ethereum-data-sql &&
-    mv genesis.json genesis-real.json &&
-    ln -s stablenetGenesis.json genesis.json &&
+    ln -sf stablenetGenesis.json genesis.json &&
     info "  configuring database 'eth', installing genesis block" &&
-    ethereum-setup
+    if [[ $(ethereum-setup 2>&1 | tail -n1) == "ethereum-setup: called getBlockIdFromBlock on a block that appears more than once in the DB" || $? == 0 ]]
+    then true
+    else false
+    fi
 }
 
 function setup_nginx () {
     info "Setting up http->https redirect..."
+    sudo apt-get -y install nginx &&
     cat <<EOF | sudo tee /etc/nginx/sites-available/https_redirect >/dev/null &&
 server {
     server_name *.blockapps.net;
     return 301 https://$host$request_uri;5F5F
 }
 EOF
-    sudo ln -s ../https_redirect /etc/nginx/sites-enabled &&
-    sudo rm -r /etc/nginx/sites-enabled/default
+    sudo ln -sf ../https_redirect /etc/nginx/sites-enabled &&
+    sudo rm -f /etc/nginx/sites-enabled/default
 }
 
 build_log=~/ethereum-build.log
+
+function copy_scripts () {
+    info "Copying startup scripts and running them..."
+    port=80
+    [[ $1 == "private" ]] && port=443
+
+    cat <<EOF | sudo tee /etc/rc.local
+#!/bin/bash
+for homedir in /home/*; do
+    user=$(basename $homedir)
+    for script in $homedir/.local/startup/*; do
+         sudo -u $user bash -c "[[ -x $script ]] && $script start"
+    done
+done
+exit 0
+EOF
+    
+    cat <<EOF >~/.local/startup/startEVM.sh &&
+#!/bin/bash
+
+cd
+screen -d -m -S ethereum-vm ethereum-vm --sqlDiff --createTransactionResults --wrapTransactions
+EOF
+    cat <<EOF >~/.local/startup/startAPI.sh &&
+#!/bin/bash
+
+cd ~/ethereumH/hserver-eth
+export HOST="$(hostname -I)" APPROOT="" PORT=$port
+screen -d -m -S api api
+EOF
+    cp ~/ethereumH/ethereum-conf/ethconf.yaml ~/.ethereumH &&
+    sudo setcap 'cap_net_bind_service=+ep' ~/.local/bin/api &&
+    ~/.local/startup/startAPI.sh &&
+    ~/.local/startup/startEVM.sh # Order seems to be important
+}
 
 function setup_info () {
     exec 3>&1 1>$build_log 2>&1

@@ -19,5 +19,6 @@ build_ethereumH &&
 setup_dbs &&
 if [[ "$2" == "private" ]]; then
     install_auth && setup_nginx
-fi ||
+fi &&
+copy_scripts ||
 info "Setup failed!  See $build_log."
