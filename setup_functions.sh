@@ -128,9 +128,9 @@ function copy_scripts () {
 #!/bin/bash
 for homedir in /home/*; do
     user=\$(basename \$homedir)
-    sudo -u $user bash -c \
+    sudo -u \$user bash -c \\
     "for script in \$homedir/.local/startup/*; do
-         [[ -x \$script ]] && \$script start
+         [[ -x \\\$script ]] && \\\$script start
     done"
 done
 exit 0
