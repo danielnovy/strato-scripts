@@ -1,0 +1,23 @@
+#!/bin/bash
+if [[ $# == 0 ]]; then exit; fi
+
+. setup_functions.sh
+
+# the setup_$1.sh script must define:
+# - get_dependencies() (returning an exit status)
+# - db_conf_dir (where pg_hba.conf lives)
+. setup_$1.sh
+
+setup_info
+
+get_dependencies &&
+get_mgit &&
+set_localbinpath &&
+get_ethereumH &&
+install_solc &&
+build_ethereumH &&
+setup_dbs &&
+if [[ "$2" == "private" ]]; then
+    install_auth && setup_nginx
+fi ||
+info "Setup failed!  See $build_log."

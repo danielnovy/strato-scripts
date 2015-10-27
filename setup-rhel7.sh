@@ -77,3 +77,13 @@ cd
 cp ~/ethereumH/ethereum-conf/ethconf.yaml ~/.ethereumH
 cp ~/ethereumH/ethereum-conf/start{API,EVM}.sh ~/.local/bin
 sudo setcap 'cap_net_bind_service=+ep' ~/.local/bin/api
+
+sudo yum -y install nginx
+cat <<EOF | sudo tee /etc/nginx/sites-available/https_redirect >/dev/null
+server {
+    server_name *.blockapps.net;
+    return 301 https://$host$request_uri;5F5F
+}
+EOF
+sudo ln -s ../https_redirect /etc/nginx/sites-enabled
+sudo rm -r /etc/nginx/sites-enabled/default

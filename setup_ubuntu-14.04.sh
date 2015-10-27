@@ -1,0 +1,33 @@
+function get_dependencies () {
+    install_stack &&
+    install_happy_alex &&
+    install_dbs
+
+    return $?
+}
+
+function install_stack () {
+    info "Installing stack..."
+
+    cd
+    wget -q -O- https://s3.amazonaws.com/download.fpcomplete.com/ubuntu/fpco.key \
+	| sudo apt-key add - &&
+    echo 'deb http://download.fpcomplete.com/ubuntu/trusty stable main' \
+	| sudo tee /etc/apt/sources.list.d/fpco.list &&
+    sudo apt-get update &&
+    sudo apt-get install stack -y
+}
+
+function install_happy_alex () {
+    cd
+    info "Installing alex and happy..."
+    stack install happy alex
+}
+
+function install_dbs () {
+    cd
+    info "Installing postgresql and leveldb..."
+    sudo apt-get -y install libpq-dev postgresql postgresql-client libleveldb-dev
+}
+
+db_conf_dir="/etc/postgresql/9.3/main"
