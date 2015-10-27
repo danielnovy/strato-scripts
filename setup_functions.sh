@@ -127,9 +127,9 @@ function copy_scripts () {
     cat <<EOF | sudo tee /etc/rc.local >/dev/null &&
 #!/bin/bash
 for homedir in /home/*; do
-    user=$(basename $homedir)
-    for script in $homedir/.local/startup/*; do
-         sudo -u $user bash -c "[[ -x $script ]] && $script start"
+    user=\$(basename $homedir)
+    for script in \$homedir/.local/startup/*; do
+         sudo -u \$user bash -c "[[ -x $script ]] && \$script start"
     done
 done
 exit 0
