@@ -122,7 +122,9 @@ function copy_scripts () {
     port=80
     [[ $1 == "private" ]] && port=443
 
-    cat <<EOF | sudo tee /etc/rc.local
+    cp ~/ethereumH/ethereum-conf/ethconf.yaml ~/.ethereumH &&
+    sudo setcap 'cap_net_bind_service=+ep' ~/.local/bin/api &&
+    cat <<EOF | sudo tee /etc/rc.local &&
 #!/bin/bash
 for homedir in /home/*; do
     user=$(basename $homedir)
@@ -132,24 +134,51 @@ for homedir in /home/*; do
 done
 exit 0
 EOF
-    
-    cat <<EOF >~/.local/startup/startEVM.sh &&
+    mkdir -p ~/.local/strato &&
+    cat <<EOF  >~/.local/strato/ethereum-vm &&
 #!/bin/bash
 
-cd
-screen -d -m -S ethereum-vm ethereum-vm --sqlDiff --createTransactionResults --wrapTransactions
+case $1 in
+    "start")
+        cd
+        screen -d -m -S ethereum-vm ethereum-vm --sqlDiff --createTransactionResults --wrapTransactions
+        ;;
+    "stop")
+        screen -S ethereum-vm -X kill
+        ;;
+    "restart")
+        $0 stop && $0 start
+        ;;
+esac
 EOF
-    cat <<EOF >~/.local/startup/startAPI.sh &&
+    cat <<EOF >~/.local/strato/api &&
 #!/bin/bash
 
-cd ~/ethereumH/hserver-eth
-export HOST="$(hostname -I)" APPROOT="" PORT=$port
-screen -d -m -S api api
+case $1 in
+    "start")
+        cd ~/ethereumH/hserver-eth
+        export HOST="$(hostname -I)" APPROOT="" PORT=$port
+        screen -d -m -S api api
+        ;;
+    "stop")
+        screen -S api -X kill
+        ;;
+    "restart")
+        $0 stop && $0 start
+        ;;
+esac
 EOF
-    cp ~/ethereumH/ethereum-conf/ethconf.yaml ~/.ethereumH &&
-    sudo setcap 'cap_net_bind_service=+ep' ~/.local/bin/api &&
-    ~/.local/startup/startAPI.sh &&
-    ~/.local/startup/startEVM.sh # Order seems to be important
+    cat <<EOF >~/.local/bin/strato &&
+#!/bin/bash
+
+for script in ~/.local/strato/*; do
+    [[ -x $script ]] && $script $1
+done
+EOF
+    mkdir -p ~/.local/startup &&
+    ln -sf ~/.local/bin/strato ~/.local/startup &&
+    chmod 755 ~/.local/startup/{ethereum-vm,api} ~/.local/bin/strato &&
+    strato start
 }
 
 function setup_info () {
@@ -157,5 +186,5 @@ function setup_info () {
 }
 
 function info () {
-    echo 1>&3 $@
+    echo 1>&3 "$@"
 }
