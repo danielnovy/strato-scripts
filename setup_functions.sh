@@ -108,7 +108,7 @@ function setup_nginx () {
     cat <<EOF | sudo tee /etc/nginx/sites-available/https_redirect >/dev/null &&
 server {
     server_name *.blockapps.net;
-    return 301 https://$host$request_uri;5F5F
+    return 301 https://$host$request_uri;
 }
 EOF
     sudo ln -sf ../https_redirect /etc/nginx/sites-enabled &&
@@ -127,7 +127,7 @@ function copy_scripts () {
     cat <<EOF | sudo tee /etc/rc.local >/dev/null &&
 #!/bin/bash
 for homedir in /home/*; do
-    user=\$(basename $homedir)
+    user=\$(basename \$homedir)
     for script in \$homedir/.local/startup/*; do
          sudo -u \$user bash -c "[[ -x $script ]] && \$script start"
     done
