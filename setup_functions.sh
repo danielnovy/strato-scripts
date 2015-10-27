@@ -124,7 +124,7 @@ function copy_scripts () {
 
     cp ~/ethereumH/ethereum-conf/ethconf.yaml ~/.ethereumH &&
     sudo setcap 'cap_net_bind_service=+ep' ~/.local/bin/api &&
-    cat <<EOF | sudo tee /etc/rc.local &&
+    cat <<EOF | sudo tee /etc/rc.local >/dev/null &&
 #!/bin/bash
 for homedir in /home/*; do
     user=$(basename $homedir)
@@ -138,7 +138,7 @@ EOF
     cat <<EOF  >~/.local/strato/ethereum-vm &&
 #!/bin/bash
 
-case $1 in
+case \$1 in
     "start")
         cd
         screen -d -m -S ethereum-vm ethereum-vm --sqlDiff --createTransactionResults --wrapTransactions
@@ -147,24 +147,24 @@ case $1 in
         screen -S ethereum-vm -X kill
         ;;
     "restart")
-        $0 stop && $0 start
+        \$0 stop && \$0 start
         ;;
 esac
 EOF
     cat <<EOF >~/.local/strato/api &&
 #!/bin/bash
 
-case $1 in
+case \$1 in
     "start")
         cd ~/ethereumH/hserver-eth
-        export HOST="$(hostname -I)" APPROOT="" PORT=$port
+        export HOST="\$(hostname -I)" APPROOT="" PORT=$port
         screen -d -m -S api api
         ;;
     "stop")
         screen -S api -X kill
         ;;
     "restart")
-        $0 stop && $0 start
+        \$0 stop && \$0 start
         ;;
 esac
 EOF
@@ -172,12 +172,12 @@ EOF
 #!/bin/bash
 
 for script in ~/.local/strato/*; do
-    [[ -x $script ]] && $script $1
+    [[ -x "\$script" ]] && \$script \$1
 done
 EOF
     mkdir -p ~/.local/startup &&
     ln -sf ~/.local/bin/strato ~/.local/startup &&
-    chmod 755 ~/.local/startup/{ethereum-vm,api} ~/.local/bin/strato &&
+    chmod 755 ~/.local/strato/{ethereum-vm,api} ~/.local/bin/strato &&
     strato start
 }
 

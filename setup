@@ -20,5 +20,5 @@ setup_dbs &&
 if [[ "$2" == "private" ]]; then
     install_auth && setup_nginx
 fi &&
-copy_scripts ||
+copy_scripts $2 ||
 info "Setup failed!  See $build_log."
