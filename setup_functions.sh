@@ -45,6 +45,7 @@ function get_ethereumH () {
 function build_ethereumH () {
     cd ~/ethereumH
     info "Installing ethereumH..."
+    stack setup &&
     stack install
 }
 
