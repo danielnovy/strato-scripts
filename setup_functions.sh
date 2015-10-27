@@ -107,8 +107,8 @@ function setup_nginx () {
     sudo apt-get -y install nginx &&
     cat <<EOF | sudo tee /etc/nginx/sites-available/https_redirect >/dev/null &&
 server {
-    server_name *.blockapps.net;
-    return 301 https://$host$request_uri;
+    server_name \*.blockapps.net;
+    return 301 https://\$host\$request_uri;
 }
 EOF
     sudo ln -sf ../https_redirect /etc/nginx/sites-enabled &&
