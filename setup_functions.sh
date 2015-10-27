@@ -77,7 +77,7 @@ EOF
 function setup_dbs() {
     info "Setting up postgresql..."
     sudo -u postgres psql -U postgres -d postgres \
-	-c "alter role postgres password '5Fapi'" &&
+	-c "alter role postgres password 'api'" &&
     info "  user: postgres" &&
     info "  password: api" &&
     (sudo -u postgres createdb eth 2> /dev/null &&

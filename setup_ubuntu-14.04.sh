@@ -15,7 +15,7 @@ function install_stack () {
     echo 'deb http://download.fpcomplete.com/ubuntu/trusty stable main' \
 	| sudo tee /etc/apt/sources.list.d/fpco.list &&
     sudo apt-get update &&
-    sudo apt-get install stack -y &&
+    sudo apt-get install stack -y
 }
 
 function install_happy_alex () {
