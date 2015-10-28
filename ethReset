@@ -1,6 +1,11 @@
 #!/bin/bash
 
-rm -rf .ethereumH/
+rm -rf ~/.ethereumH/
 
 sudo -u postgres dropdb eth
 sudo -u postgres createdb eth
+
+cd ~/ethereumH/ethereum-data-sql
+ethereum-setup
+
+cp ~/ethereumH/ethereum-conf/ethconf.yaml ~/.ethereumH

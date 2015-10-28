@@ -1,0 +1,16 @@
+#!/bin/bash
+
+if [[ $# < 2 ]]; then exit 1; fi
+
+remote=$1
+distro=$2
+deploy=$3
+
+setup_scripts="setup setup_functions.sh setup_$distro.sh"
+auth_files="priv key.pem certificate.pem"
+solc_tgz="solc.tar.gz"
+
+files="$setup_scripts $solc_tgz"
+[[ $deploy == "private" ]] && files+=" $auth_files"
+
+scp $files $remote:~/

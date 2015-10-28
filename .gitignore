@@ -17,4 +17,6 @@ hserver-eth
 hminer
 p2p-server
 ethereum-query
+yesod-raml
+.stack-work
 work
