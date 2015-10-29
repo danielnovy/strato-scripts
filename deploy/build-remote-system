@@ -12,4 +12,5 @@ shift
 setup_scripts="setup setup_functions.sh setup_$distro.sh"
 
 scp $setup_scripts strato-files.tar.gz "$remote:~/" &&
-ssh "$remote" bash -c "./setup $@"
+ssh "$remote" ./setup "$@" &&
+rm $setup_scripts

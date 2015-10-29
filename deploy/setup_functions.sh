@@ -77,7 +77,7 @@ server {
 }
 EOF
     sudo ln -sf ../https_redirect /etc/nginx/sites-enabled &&
-    sudo rm -f /etc/nginx/sites-enabled/default &&
+    sudo rm -f /etc/nginx/sites-enabled/default
 }
 
 function copy_files () {
