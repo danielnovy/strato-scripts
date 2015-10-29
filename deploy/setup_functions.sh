@@ -103,7 +103,8 @@ exit 0
 EOF
     if [[ "$2" != "private" ]]; then
         sed -i s/PORT=443/PORT=80/ ~/.local/strato/api &&
-        rm ~/ethereumH/hserver-eth/{key,certificate}.pem
+        rm ~/ethereumH/hserver-eth/{key,certificate}.pem &&
+        touch ~/ethereumH/hserver-eth/{key,certificate}.pem
     fi
     cp ~/ethereumH/ethereum-conf/ethconf.yaml ~/.ethereumH &&
     sudo setcap 'cap_net_bind_service=+ep' ~/.local/bin/api &&
