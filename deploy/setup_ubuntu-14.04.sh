@@ -1,7 +1,8 @@
 function get_dependencies () {
     install_stack &&
     install_happy_alex &&
-    install_dbs
+    install_dbs &&
+    install_node
 
     return $?
 }
@@ -44,6 +45,12 @@ function install_dbs () {
     cd
     info "Installing postgresql and leveldb..."
     sudo apt-get -y install libpq-dev postgresql postgresql-client libleveldb-dev
+}
+
+function install_node {
+    info "Installing Node.js"
+    (curl -sL https://deb.nodesource.com/setup_5.x | sudo -E bash -) &&
+    sudo apt-get -y install nodejs
 }
 
 db_conf_dir="/etc/postgresql/9.3/main"

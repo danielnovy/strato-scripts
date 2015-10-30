@@ -14,7 +14,8 @@ get_dependencies &&
 get_mgit &&
 build_ethereumH &&
 setup_dbs "$mode" &&
+install_blockappsjs &&
 if [[ "$priv" == "private" ]]; then setup_nginx; fi &&
 copy_files "$@" &&
-rm $build_log ||
+rm $build_log setup setup_functions.sh setup_$distro.sh ||
 info "Setup failed!  See $build_log."

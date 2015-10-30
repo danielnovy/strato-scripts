@@ -67,6 +67,18 @@ EOF
     [[ $(ethereum-setup 2>&1 | tail -n1) == "ethereum-setup: called getBlockIdFromBlock on a block that appears more than once in the DB" || $? == 0 ]]
 }
 
+function install_blockappsjs {
+    cd
+    info "Installing blockapps-js..."
+     
+    sudo npm install -g browserify minify &&
+    npm install blockapps-js &&
+    cd ./node_modules/blockapps-js &&
+    ./mkbrowser.sh &&
+    cp blockapps.js ~/ethereumH/hserver-eth/static/js &&
+    ln -sf blockapps.js ~/ethereumH/hserver-eth/static/js/api.js
+}
+
 function setup_nginx () {
     info "Setting up http->https redirect..."
     sudo apt-get -y install nginx &&
