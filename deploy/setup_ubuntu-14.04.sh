@@ -16,6 +16,21 @@ function install_stack () {
 	| sudo tee /etc/apt/sources.list.d/fpco.list &&
     sudo apt-get update &&
     sudo apt-get install stack -y
+
+    localbinpath=~/.local/bin
+    profilefile=~/.profile
+    setpath="PATH=\"$localbinpath:$PATH\""
+
+    case ":$PATH:" in
+	*":$localbinpath:"*) 
+	    info "$localbinpath already in PATH"
+	    ;;
+	*)
+	    info "Adding $localbinpath to PATH..."
+	    echo $setpath >> $profilefile
+	    eval $setpath
+	    ;;
+    esac
 }
 
 function install_happy_alex () {
