@@ -1,5 +1,0 @@
-#!/bin/bash
-
-killall api
-killall p2p-server
-killall ethereumH
