@@ -13,5 +13,3 @@ fi
 cd go-ethereum
 
 make
-
-cp build/bin/geth ../upload/bin/
