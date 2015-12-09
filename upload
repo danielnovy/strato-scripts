@@ -28,5 +28,6 @@ cp strato-scripts/bashrc2 work/upload/bashrc2
 cp strato-scripts/ethReset work/upload/bin/
 
 cp strato-conf/ethconf.yaml work/upload/ethereumH/
+cp strato-conf/peers.yaml work/upload/ethereumH/
 
 rsync -avz -e "ssh -o StrictHostKeyChecking=no -o UserKnownHostsFile=/dev/null" --progress work/upload/* root@$1:~/
