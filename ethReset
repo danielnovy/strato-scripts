@@ -5,7 +5,7 @@ rm -rf ~/.ethereumH/
 sudo -u postgres dropdb eth
 sudo -u postgres createdb eth
 
-cd ~/ethereumH/ethereum-data-sql
-ethereum-setup
+strato-setup
 
-cp ~/ethereumH/ethereum-conf/ethconf.yaml ~/.ethereumH
+cp strato-conf/ethconf.yaml ~/.ethereumH/
+cp peers.yaml ~/.ethereumH/
