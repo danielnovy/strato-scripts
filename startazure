@@ -1,6 +1,6 @@
 #!/bin/bash
 
-nohup strato-p2p-server --runUDPServer=false -a 40.76.57.208 -p 30303 > logs/strato-p2p-server &
+nohup strato-p2p-server --runUDPServer=false -a 10.5.0.4 -p 30303 > logs/strato-p2p-server &
 nohup ethereum-discover 40.76.57.208 30303 > logs/ethereum-discover &
 cd strato-api
 nohup strato-api > ../logs/strato-api &
