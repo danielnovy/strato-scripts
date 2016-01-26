@@ -1,0 +1,25 @@
+sudo apt-get install git emacs postgresql postgresql-server-dev-9.3 libleveldb-dev 
+
+echo 'deb http://download.fpcomplete.com/ubuntu trusty main'|sudo tee /etc/apt/sources.list.d/fpco.list
+sudo apt-get update && sudo apt-get install stack -y
+
+echo "you need to add ~/.local/bin/ to your path"
+
+export PATH=$PATH:~/.local/bin/
+
+stack install alex
+
+git clone http://github.com/blockapps/mgit
+cd mgit/
+stack setup
+stack install
+
+mgit clone http://github.com/blockapps.net -b develop
+emacs .bashrc 
+sudo apt-get install emacs
+
+mgit clone http://github.com/blockapps/strato -b develop
+
+cd strato/
+
+stack install
