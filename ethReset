@@ -8,4 +8,4 @@ sudo -u postgres createdb eth
 strato-setup
 
 cp strato-conf/ethconf.yaml ~/.ethereumH/
-cp peers.yaml ~/.ethereumH/
+cp strato-conf/peers.yaml ~/.ethereumH/
