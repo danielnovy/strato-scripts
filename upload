@@ -17,6 +17,7 @@ cp .stack-work/install/x86_64-linux/lts-3.4/7.10.2/bin/ethereum-vm work/upload/b
 cp .stack-work/install/x86_64-linux/lts-3.4/7.10.2/bin/strato-setup work/upload/bin/
 cp .stack-work/install/x86_64-linux/lts-3.4/7.10.2/bin/ethereum-discover work/upload/bin/
 cp .stack-work/install/x86_64-linux/lts-3.4/7.10.2/bin/queryStrato work/upload/bin/
+cp .stack-work/install/x86_64-linux/lts-3.4/7.10.2/bin/strato-index work/upload/bin/
 
 if [ -e work/go-ethereum/build/bin/geth ]
 then
