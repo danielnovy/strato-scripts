@@ -7,30 +7,34 @@ then
 	exit 1
 fi
 
-mkdir -p work/upload/bin
-mkdir -p work/upload/ethereumH
+user=${2:-root}
 
-cp .stack-work/install/x86_64-linux/lts-3.4/7.10.2/bin/strato-p2p-client work/upload/bin/
-cp .stack-work/install/x86_64-linux/lts-3.4/7.10.2/bin/strato-api work/upload/bin/
-cp .stack-work/install/x86_64-linux/lts-3.4/7.10.2/bin/strato-p2p-server work/upload/bin/
-cp .stack-work/install/x86_64-linux/lts-3.4/7.10.2/bin/ethereum-vm work/upload/bin/
-cp .stack-work/install/x86_64-linux/lts-3.4/7.10.2/bin/strato-setup work/upload/bin/
-cp .stack-work/install/x86_64-linux/lts-3.4/7.10.2/bin/ethereum-discover work/upload/bin/
-cp .stack-work/install/x86_64-linux/lts-3.4/7.10.2/bin/queryStrato work/upload/bin/
-cp .stack-work/install/x86_64-linux/lts-3.4/7.10.2/bin/strato-index work/upload/bin/
+mkdir -p work/upload/.local/bin
+mkdir -p work/upload/.ethereumH
+
+cp .stack-work/install/x86_64-linux/lts-3.4/7.10.2/bin/strato-p2p-client work/upload/.local/bin/
+cp .stack-work/install/x86_64-linux/lts-3.4/7.10.2/bin/strato-api work/upload/.local/bin/
+cp .stack-work/install/x86_64-linux/lts-3.4/7.10.2/bin/strato-p2p-server work/upload/.local/bin/
+cp .stack-work/install/x86_64-linux/lts-3.4/7.10.2/bin/ethereum-vm work/upload/.local/bin/
+cp .stack-work/install/x86_64-linux/lts-3.4/7.10.2/bin/strato-setup work/upload/.local/bin/
+cp .stack-work/install/x86_64-linux/lts-3.4/7.10.2/bin/ethereum-discover work/upload/.local/bin/
+cp .stack-work/install/x86_64-linux/lts-3.4/7.10.2/bin/queryStrato work/upload/.local/bin/
+cp .stack-work/install/x86_64-linux/lts-3.4/7.10.2/bin/strato-index work/upload/.local/bin/
 
 if [ -e work/go-ethereum/build/bin/geth ]
 then
-	cp work/go-ethereum/build/bin/geth work/upload/bin/
+	cp work/go-ethereum/build/bin/geth work/upload/.local/bin/
 fi
 
 cp blockapps-data/livenetGenesis.json work/upload/
 cp -a strato-api/static work/upload/
 cp -a strato-api/config work/upload/
 cp strato-scripts/bashrc2 work/upload/bashrc2
-cp strato-scripts/ethReset work/upload/bin/
+cp strato-scripts/ethReset work/upload/.local/bin/
+cp strato-scripts/ubuntuSetupPeer work/upload/.local/bin/
+cp strato-scripts/setupKafka work/upload/.local/bin/
 
-cp strato-conf/ethconf.yaml work/upload/ethereumH/
-cp strato-conf/peers.yaml work/upload/ethereumH/
+cp strato-conf/ethconf.yaml work/upload/.ethereumH/
+cp strato-conf/peers.yaml work/upload/.ethereumH/
 
-rsync -avz -e "ssh -o StrictHostKeyChecking=no -o UserKnownHostsFile=/dev/null" --progress work/upload/* root@$1:~/
+rsync -avz -e "ssh -o StrictHostKeyChecking=no -o UserKnownHostsFile=/dev/null" --progress work/upload/ $user@$1:~/../$user
