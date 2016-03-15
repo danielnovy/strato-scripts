@@ -26,6 +26,9 @@ rm $base/kafka.tgz
 
 sed -i 's@/tmp/kafka-logs@/var/lib/kafka@' $base/kafka/config/server.properties
 
-echo "export KAFKA_HEAP_OPTS=\"-Xmx256M -Xms128M\"" > $base/kafka/doit
-echo "nohup $base/kafka/bin/kafka-server-start.sh $base/kafka/config/server.properties > $base/kafka/kafka.log 2>&1 &" >> $base/kafka/doit
+echo >$base/kafka/doit <<EOF
+#!/bin/bash"
+export KAFKA_HEAP_OPTS=\"-Xmx256M -Xms128M\"
+nohup $base/kafka/bin/kafka-server-start.sh $base/kafka/config/server.properties > $base/kafka/kafka.log 2>&1 &
+EOF
 chmod 755 $base/kafka/doit
