@@ -4,7 +4,7 @@ exec >&/dev/null
 echo 1>&3 "Stopping Zookeeper"
 sudo service zookeeper stop
 echo 1>&3 "Stopping kafka"
-killall java
+killall -9 java
 echo 1>&3 "Clearing kafka and leveldb data"
 rm -r ~/.ethereumH/*/
 rm ~/.ethereumH/indexOffset
@@ -14,7 +14,7 @@ sudo -u postgres createdb eth
 ( cd ../blockapps-data; strato-setup )
 echo 1>&3 "Starting Zookeeper"
 sudo service zookeeper start
-sleep 3
+sleep 2
 echo 1>&3 "Starting kafka"
 ~/kafka/doit 
-sleep 3
+sleep 2
