@@ -1,0 +1,20 @@
+#!/bin/bash
+exec 3>&1
+exec >&/dev/null
+echo 1>&3 "Stopping Zookeeper"
+sudo service zookeeper stop
+echo 1>&3 "Stopping kafka"
+killall java
+echo 1>&3 "Clearing kafka and leveldb data"
+rm -r ~/.ethereumH/*/
+rm ~/.ethereumH/indexOffset
+echo 1>&3 "Recreating 'eth' database"
+sudo -u postgres dropdb eth
+sudo -u postgres createdb eth
+( cd ../blockapps-data; strato-setup )
+echo 1>&3 "Starting Zookeeper"
+sudo service zookeeper start
+sleep 3
+echo 1>&3 "Starting kafka"
+~/kafka/doit 
+sleep 3
