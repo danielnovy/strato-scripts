@@ -11,13 +11,19 @@ rm -rf /usr/local/var/lib/kafka-logs
 kafka-topics.sh --zookeeper localhost:2181 --alter --topic block --config retention.ms=100
 kafka-topics.sh --zookeeper localhost:2181 --alter --topic unminedblock --config retention.ms=100
 
+kafka-topics.sh --zookeeper localhost:2181 --alter --topic block --config delete.retention.ms=100
+kafka-topics.sh --zookeeper localhost:2181 --alter --topic unminedblock --config delete.retention.ms=100
+
 killall -9 java
 
-echo "sleeping for a minute"
-sleep 70
+echo "sleeping for a bit..."
+sleep 20
 
 kafka-topics.sh --zookeeper localhost:2181 --alter --topic block --config retention.ms=10000
 kafka-topics.sh --zookeeper localhost:2181 --alter --topic unminedblock --config retention.ms=10000
+
+kafka-topics.sh --zookeeper localhost:2181 --alter --topic block --config delete.retention.ms=100000
+kafka-topics.sh --zookeeper localhost:2181 --alter --topic unminedblock --config delete.retention.ms=100000
 
 echo "still active topics?"
 kafka-topics.sh --zookeeper localhost:2181 --list
@@ -26,4 +32,4 @@ rm -rf ~/.ethereumH/*
 cp ../strato-conf/ethconf.yaml ~/.ethereumH/
 dropdb eth
 createdb eth
-cd ../strato-setup/; strato-setup; cd ../strato-scripts/
+cd ../blockapps-data/; strato-setup; cd ../blockapps-data/
