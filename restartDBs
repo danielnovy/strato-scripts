@@ -6,12 +6,20 @@ exec 2> >(while read line; do echo -e "\e[01;31m$line\e[0m" >&2; done)
 
 echo "Stopping kafka"
 PIDS=$(ps ax | grep -i 'kafka\.Kafka' | grep java | grep -v grep | awk '{print $1}')
-if [ -n "$PIDS" ]; then
-  kill -SIGTERM $PIDS
+if [ -z "$PIDS" ]; then
+    echo "kafka already down"
+else
+    kill -SIGTERM $PIDS
 fi
 
 echo "Stopping Zookeeper"
-sudo service zookeeper stop
+PIDS=$(ps ax | grep java | grep -i QuorumPeerMain | grep -v grep | awk '{print $1}')
+if [ -z "$PIDS" ]; then
+    echo "zookeeper already down"
+else
+    sudo service zookeeper stop
+fi
+
 
 echo "Clearing all databases"
 rm -rf ~/.ethereumH
