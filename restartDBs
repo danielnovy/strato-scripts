@@ -17,6 +17,7 @@ echo "Clearing all databases"
 rm -rf ~/.ethereumH
 mkdir -p ~/.ethereumH/conf/
 cp blockapps-data/*Genesis.json ~/.ethereumH/conf/
+cp strato-conf/ethconf.yaml ~/.ethereumH
 sudo -u postgres dropdb eth
 sudo -u postgres createdb eth
 
