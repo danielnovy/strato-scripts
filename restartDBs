@@ -11,6 +11,7 @@ if [ -z "$PIDS" ]; then
 else
     kill -SIGTERM $PIDS
 fi
+sleep 6
 
 echo "Stopping Zookeeper"
 PIDS=$(ps ax | grep java | grep -i QuorumPeerMain | grep -v grep | awk '{print $1}')
@@ -20,12 +21,11 @@ else
     sudo service zookeeper stop
 fi
 
-
 echo "Clearing all databases"
 rm -rf ~/.ethereumH
 mkdir -p ~/.ethereumH/conf/
-cp blockapps-data/*Genesis.json ~/.ethereumH/conf/
-cp strato-conf/ethconf.yaml ~/.ethereumH
+cp ../blockapps-data/*Genesis.json ~/.ethereumH/conf/
+cp ../strato-conf/ethconf.yaml ~/.ethereumH
 sudo -u postgres dropdb eth
 sudo -u postgres createdb eth
 
