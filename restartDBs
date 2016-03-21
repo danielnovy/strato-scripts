@@ -4,6 +4,8 @@
 set -e
 exec 2> >(while read line; do echo -e "\e[01;31m$line\e[0m" >&2; done)
 
+genesisName=${1:-stablenet}
+
 echo "Stopping kafka"
 PIDS=$(ps ax | grep -i 'kafka\.Kafka' | grep java | grep -v grep | awk '{print $1}')
 if [ -z "$PIDS" ]; then
@@ -26,6 +28,7 @@ rm -rf ~/.ethereumH
 mkdir -p ~/.ethereumH/conf/
 cp ../blockapps-data/*Genesis.json ~/.ethereumH/conf/
 cp ../strato-conf/ethconf.yaml ~/.ethereumH
+cp ../strato-conf/peers.yaml ~/.ethereumH
 sudo -u postgres dropdb eth
 sudo -u postgres createdb eth
 
@@ -38,4 +41,4 @@ echo "Starting kafka"
 sleep 2
 
 echo "Initializing the database"
-strato-setup --genesisBlockName=stablenet
+strato-setup --genesisBlockName=$genesisName
