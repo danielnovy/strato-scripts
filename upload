@@ -26,7 +26,6 @@ then
 	cp work/go-ethereum/build/bin/geth work/upload/.local/bin/
 fi
 
-cp blockapps-data/livenetGenesis.json work/upload/
 cp -a strato-api/static work/upload/
 cp -a strato-api/config work/upload/
 cp strato-scripts/bashrc2 work/upload/bashrc2
@@ -36,5 +35,8 @@ cp strato-scripts/setupKafka work/upload/.local/bin/
 
 cp strato-conf/ethconf.yaml work/upload/.ethereumH/
 cp strato-conf/peers.yaml work/upload/.ethereumH/
+
+mkdir work/upload/.ethereumH/conf
+cp blockapps-data/*Genesis.json work/upload/.ethereumH/conf/
 
 rsync -avz -e "ssh -o StrictHostKeyChecking=no -o UserKnownHostsFile=/dev/null" --progress work/upload/ $user@$1:~/../$user
